@@ -17,16 +17,16 @@ gem install open_qq
 require 'rubygems'
 require 'open_qq'
 
-OpenQq.setup(:appid => '123', :appkey => '456', :env => 'http://119.147.19.43')
+OpenQq.setup(:appid => '123', :appkey => '456', :env => 'https://graph.qq.com')
 
 # 或者https
-OpenQq.setup(:appid => '123', :appkey => '456', :env => 'https://119.147.19.43')
+OpenQq.setup(:appid => '123', :appkey => '456', :env => 'https://graph.qq.com')
 
 # get请求
-user_info = OpenQq.get('/v3/user/get_info', :openid => '111',:openkey => '222')
+user_info = OpenQq.get('/user/get_info', :openid => '111',:openkey => '222')
 
 # 或者post请求
-user_info = OpenQq.post('/v3/user/get_info',:openid => '111',:openkey => '222')
+user_info = OpenQq.post('/user/get_info',:openid => '111',:openkey => '222')
 
 user_info.ret # => 0
 user_info.nickname # => 'foo'
@@ -35,7 +35,7 @@ user_info.nickname # => 'foo'
 如果你只想原样返回未加工的数据，使用`raw => true`
 
 ```ruby
-user_info = OpenQq.post('/v3/user/get_info', {:openid => '111', :openkey => '222'}, :raw => true)
+user_info = OpenQq.post('/user/get_info', {:openid => '111', :openkey => '222'}, :raw => true)
 puts user_info
 # => '{ "ret": 0, "is_lost": 0, "nickname": "foo" }'
 ```
@@ -43,10 +43,10 @@ puts user_info
 如果你不想使用全局的配置
 
 ```ruby
-options   = {:appid => 'newappid', :appkey => 'newappkey', :env => 'http://newenv'}
+options   = {:appid => 'newappid', :appkey => 'newappkey', :env => 'https://graph.qq.com'}
 
-user_info = OpenQq.call('/v3/user/get_info', options) do |request|
-  
+user_info = OpenQq.call('/user/get_info', options) do |request|
+
   request.get {:openid => '111',:openkey => '222'}
 
   #或者
@@ -99,10 +99,10 @@ rails g open_qq:install
 
 ```ruby
 class OpenQqController < ApplicationController
-  
+
   # 假设这里是应用的入口
   def index
-    user_info = OpenQq.post('/v3/user/get_info', params.slice!(:action, :controller))
+    user_info = OpenQq.post('/user/get_info', params.slice!(:action, :controller))
     if user_info.ret == 0
       # do something
     end
@@ -135,7 +135,7 @@ puts sig # 与联调结果比对
 
 ## Changelog
 
-* 2012/09/11 
+* 2012/09/11
 增加对https的支持
 支持支付回调协议签名验证
 
